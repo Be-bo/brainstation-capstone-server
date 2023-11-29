@@ -38,5 +38,45 @@
         "color": "White"
       }
     }
+  ],
+  "undefined": [
+    {
+      "id": "aa9ce898-ba05-4296-b7f6-e3f94f385122",
+      "name": "Black Collar Sweater With a Black Polo and Black Jogger Sweatpants",
+      "images": [
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-AyEjH7rkisPdwv1r6OoKS1sU/user-SwBqnRgJjPKYGs3x7ooohbDm/img-Qt8Mzpe0PxBvLvhMJGtyDGOp.png?st=2023-11-29T18%3A57%3A12Z&se=2023-11-29T20%3A57%3A12Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-11-29T19%3A13%3A04Z&ske=2023-11-30T19%3A13%3A04Z&sks=b&skv=2021-08-06&sig=m7oCCwzVBAlb4RpcEKRi4EeJxPKcJufbwiNHeFfSSUE%3D"
+      ],
+      "shirt": {
+        "name": "Polo",
+        "color": "Black"
+      },
+      "top": {
+        "name": "Collar Sweater",
+        "color": "Black"
+      },
+      "bottom": {
+        "name": "Jogger Sweatpants",
+        "color": "Black"
+      }
+    },
+    {
+      "id": "7c3563c2-8ef0-462c-9c6c-e1ecb97e3b74",
+      "name": "Tan Cardigan With a Olive Button-Up Shirt and Purple Traditional Sweatpants",
+      "images": [
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-AyEjH7rkisPdwv1r6OoKS1sU/user-SwBqnRgJjPKYGs3x7ooohbDm/img-4gOoqBqDc8hdSbg1o3wuGDNf.png?st=2023-11-29T18%3A58%3A58Z&se=2023-11-29T20%3A58%3A58Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-11-29T19%3A06%3A06Z&ske=2023-11-30T19%3A06%3A06Z&sks=b&skv=2021-08-06&sig=EDHqE%2B0xk/QAc/285cw4oO1ZGnKutuXhY0Pxh50qITA%3D"
+      ],
+      "shirt": {
+        "name": "Button-Up Shirt",
+        "color": "Olive"
+      },
+      "top": {
+        "name": "Cardigan",
+        "color": "Tan"
+      },
+      "bottom": {
+        "name": "Traditional Sweatpants",
+        "color": "Purple"
+      }
+    }
   ]
 }

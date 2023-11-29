@@ -16,7 +16,7 @@ const historyJsonPath = 'generationHistory.json';
 // MARK: Create a Generation Item
 // http://3.20.237.64:80/playground/generate -- UBUNTU SERVER
 // http://3.145.198.110:80/playground/generate -- AWS LINUX SERVER
-router.get('/playground/generate', async (req, res) => {
+router.post('/playground/generate', async (req, res) => {
     try {
         const prompt = helpers.constructPrompt(req.body);
         console.log('Starting generation with prompt: ', prompt);
@@ -26,7 +26,7 @@ router.get('/playground/generate', async (req, res) => {
         const newGenerationItem = helpers.constructGenerationItem(req.body, [response.data[0].url], uuidv4());
         await helpers.saveItemToGenerationHistory(req.body.userId, newGenerationItem, historyJsonPath);
         console.log('Successfully saved item to local json: ', newGenerationItem);
-        res.status(200).json(newGenerationItem);
+        res.status(201).json(newGenerationItem);
 
     } catch (error) {
         console.log('Failed to create a new playground generation item: ', error);

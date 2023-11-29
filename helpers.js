@@ -8,7 +8,7 @@ function constructPrompt(reqBody){
 }
 
 function constructGenerationItemName(reqBody){
-    const itemName = `${reqBody.top.color} ${reqBody.top.name} With a ${reqBody.shirt.color} ${reqBody.shirt.name} and ${reqBody.bottom.color} ${reqBody.bottom.name}`; // adjust if needing to add extra categories & properties
+    const itemName = `${reqBody.top.color} ${reqBody.top.name} With a(n) ${reqBody.shirt.color} ${reqBody.shirt.name} and ${reqBody.bottom.color} ${reqBody.bottom.name}`; // adjust if needing to add extra categories & properties
     return itemName;
 }
 
