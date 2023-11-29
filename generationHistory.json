@@ -1,0 +1,42 @@
+{
+  "test-user": [
+    {
+      "id": "b92a1c9e-f31a-4383-9146-7d4bd96d7b33",
+      "name": "Grey Hoodie With a Navy V-Neck T-Shirt and Dark Navy Jeans",
+      "images": [
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-AyEjH7rkisPdwv1r6OoKS1sU/user-SwBqnRgJjPKYGs3x7ooohbDm/img-KzA4IC67nDLiD6lYUi9bIxrY.png?st=2023-11-29T14%3A34%3A36Z&se=2023-11-29T16%3A34%3A36Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-11-28T20%3A38%3A14Z&ske=2023-11-29T20%3A38%3A14Z&sks=b&skv=2021-08-06&sig=rZduFI5kYG/8n4%2BrdCq5etGhoPO0g5NN8OpU%2BH2Z/94%3D"
+      ],
+      "shirt": {
+        "name": "V-Neck T-Shirt",
+        "color": "Navy"
+      },
+      "top": {
+        "name": "Hoodie",
+        "color": "Grey"
+      },
+      "bottom": {
+        "name": "Jeans",
+        "color": "Dark Navy"
+      }
+    },
+    {
+      "id": "451a3c48-81eb-47b1-a3eb-c5045c831dc2",
+      "name": "Grey Cardigan With a Burgundy Henley and White Chinos",
+      "images": [
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-AyEjH7rkisPdwv1r6OoKS1sU/user-SwBqnRgJjPKYGs3x7ooohbDm/img-sKoZWY9ogqIEoLkX55vN1hDk.png?st=2023-11-29T14%3A37%3A43Z&se=2023-11-29T16%3A37%3A43Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-11-29T05%3A25%3A45Z&ske=2023-11-30T05%3A25%3A45Z&sks=b&skv=2021-08-06&sig=Qnp8PXjdEmcHR5l4rnHvCnyy0Bbo7cWMC/%2B0oZ0rhnY%3D"
+      ],
+      "shirt": {
+        "name": "Henley",
+        "color": "Burgundy"
+      },
+      "top": {
+        "name": "Cardigan",
+        "color": "Grey"
+      },
+      "bottom": {
+        "name": "Chinos",
+        "color": "White"
+      }
+    }
+  ]
+}

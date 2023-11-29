@@ -1,0 +1,28 @@
+{
+    "Crew Neck T-Shirt": {"image": "http://3.145.198.110:80/public/crew-tee.png"},
+    "V-Neck T-Shirt": {"image": "http://3.145.198.110:80/public/v-neck-tee.png"},
+    "Polo": {"image": "http://3.145.198.110:80/public/polo.png"},
+    "Button-Up Shirt": {"image": "http://3.145.198.110:80/public/button-up.png"},
+    "Henley": {"image": "http://3.145.198.110:80/public/henley.png"},
+    "colors": [
+        "Black",
+        "White",
+        "Grey",
+        "Brown",
+        "Beige",
+        "Navy",
+        "Olive",
+        "Burgundy",
+        "Red",
+        "Blue",
+        "Green",
+        "Yellow",
+        "Purple",
+        "Teal",
+        "Cream",
+        "Charcoal",
+        "Tan",
+        "Maroon",
+        "Pink"
+    ]
+}
