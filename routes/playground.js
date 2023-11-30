@@ -23,7 +23,16 @@ router.post('/playground/generate', async (req, res) => {
         const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
         const response = await openai.images.generate({ model: "dall-e-3", prompt: prompt, n: 1, size: "1024x1024", });
         console.log('Successfully processed a generation request, OpenAI response: ', response);
-        const newGenerationItem = helpers.constructGenerationItem(req.body, [response.data[0].url], uuidv4());
+
+        const itemId = uuidv4();
+        const imageName = itemId + '.png';
+        console.log(imageName);
+        const savedImageUrl = 'http://3.145.198.110:80/public/' + imageName;
+        console.log(savedImageUrl);
+        const savedImagePath = await helpers.saveImageFromURL(response.data[0].url, '../public/'+imageName);
+        console.log('img saved successfully: ', savedImagePath);
+
+        const newGenerationItem = helpers.constructGenerationItem(req.body, [savedImageUrl], itemId);
         await helpers.saveItemToGenerationHistory(req.body.userId, newGenerationItem, historyJsonPath);
         console.log('Successfully saved item to local json: ', newGenerationItem);
         res.status(201).json(newGenerationItem);

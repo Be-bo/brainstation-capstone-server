@@ -1,3 +1,5 @@
+const http = require('http');
+const https = require('https');
 const fs = require('fs');
 
 function constructPrompt(reqBody){
@@ -41,9 +43,37 @@ function saveItemToGenerationHistory(userId, itemToSave, historyJsonPath){
     });
 }
 
+async function saveImageFromURL(url, destinationPath) {
+    const protocol = url.startsWith('https') ? https : http;
+  
+    return new Promise((resolve, reject) => {
+      protocol.get(url, response => {
+        const contentType = response.headers['content-type'];
+        if (!contentType || !contentType.startsWith('image')) {
+          reject(new Error('The provided URL is not an image'));
+        }
+  
+        const fileStream = fs.createWriteStream(destinationPath);
+        response.pipe(fileStream);
+  
+        fileStream.on('finish', () => {
+          fileStream.close();
+          resolve(destinationPath);
+        });
+  
+        fileStream.on('error', err => {
+          reject(err);
+        });
+      }).on('error', err => {
+        reject(err);
+      });
+    });
+  }
+
 module.exports = {
     constructPrompt,
     constructGenerationItem,
     constructGenerationItemName,
-    saveItemToGenerationHistory
+    saveItemToGenerationHistory,
+    saveImageFromURL
 }
