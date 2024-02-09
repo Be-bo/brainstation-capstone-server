@@ -40,10 +40,6 @@ client.connect()
     client.close();
   });
 
-  // LEFT OFF: realized I'll need to migrate databases to the Ubuntu server
-  // will have to do that and then test saving to mongo on there
-  // then I can move to authentication integration
-
 
 
 
