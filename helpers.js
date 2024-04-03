@@ -5,7 +5,7 @@ const fs = require('fs');
 function constructPrompt(reqBody){
     const promptCore = `A male model figure curated with a fashionable sense of style. It is donned in a ${reqBody.top.color} ${reqBody.top.name} that complements his ${reqBody.shirt.color} ${reqBody.shirt.name}. His ${reqBody.bottom.color} ${reqBody.bottom.name} add an extra flare to its outfit.`
     // in between here we can add additional sentences with extra clothing categories & their properties
-    const promptTail = ' All of this gives the figure a classy, reassuring, laidback look. The image is presented in a simple drawn style, capturing the essence of an elegant male figure.'
+    const promptTail = ' All of this gives the figure a classy, reassuring, laidback look. The image is presented in a photo realistic style, capturing the essence of an elegant male figure.'
     return promptCore + promptTail;
 }
 
