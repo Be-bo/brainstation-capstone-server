@@ -12,7 +12,7 @@ const shirtLayerJsonPath = 'shirtLayer.json';
 const bottomLayerJsonPath = 'bottomLayer.json';
 const historyJsonPath = 'generationHistory.json';
 
-const {MongoClient} = require('mongodb');
+const {MongoClient, ObjectId} = require('mongodb');
 const mongoUri = 'mongodb://localhost:27017/toga_database';
 
 
