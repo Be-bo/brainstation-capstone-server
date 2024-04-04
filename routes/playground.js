@@ -60,6 +60,8 @@ router.get('/playground/clothing-categories', async(req,res) => {
         await client.close();
 
         console.log(documents);
+    }catch(e){
+        console.error('Error: ', e);
     }
 });
 
@@ -68,49 +70,5 @@ router.get('/playground/clothing-categories', async(req,res) => {
 router.get('/playground/category', async(req, res) =>{
 
 });
-
-
-
-// MARK: Get Top Layer Carousel
-router.get('/playground/top-layer', async (req, res) => {
-    try {
-        const topLayerJson = await fs.promises.readFile(topLayerJsonPath, 'utf-8');
-        const parsedTopLayer = JSON.parse(topLayerJson);
-        console.log('Successfully returned a list of top layer clothing.');
-        res.status(200).json(parsedTopLayer);
-    } catch (error) {
-        console.log('Cannot return a list of top layer clothing: ', error);
-        res.status(500).json({ error });
-    }
-});
-
-
-// MARK: Get Shirt Layer Carousel
-router.get('/playground/shirt-layer', async (req, res) => {
-    try {
-        const shirtLayerJson = await fs.promises.readFile(shirtLayerJsonPath, 'utf-8');
-        const parsedShirtLayer = JSON.parse(shirtLayerJson);
-        console.log('Successfully returned a list of shirt layer clothing.');
-        res.status(200).json(parsedShirtLayer);
-    } catch (error) {
-        console.log('Cannot return a list of shirt layer clothing: ', error);
-        res.status(500).json({ error });
-    }
-});
-
-
-// MARK: Get Bottom Layer Carousel
-router.get('/playground/bottom-layer', async (req, res) => {
-    try {
-        const bottomLayerJson = await fs.promises.readFile(bottomLayerJsonPath, 'utf-8');
-        const parsedBottomLayer = JSON.parse(bottomLayerJson);
-        console.log('Successfully returned a list of bottom layer clothing.');
-        res.status(200).json(parsedBottomLayer);
-    } catch (error) {
-        console.log('Cannot return a list of shirt layer clothing: ', error);
-        res.status(500).json({ error });
-    }
-});
-
 
 module.exports = router;
