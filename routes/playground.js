@@ -2,16 +2,11 @@
 const express = require('express');
 const router = express.Router();
 const OpenAI = require("openai");
-const fs = require('fs');
 const helpers = require('../helpers');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 const {OPENAI_API_KEY} = process.env;
-const topLayerJsonPath = 'topLayer.json';
-const shirtLayerJsonPath = 'shirtLayer.json';
-const bottomLayerJsonPath = 'bottomLayer.json';
 const historyJsonPath = 'generationHistory.json';
-
 const {MongoClient, ObjectId} = require('mongodb');
 const mongoUri = 'mongodb://localhost:27017/toga_database';
 
@@ -59,6 +54,7 @@ router.get('/playground/clothing-categories', async(req,res) => {
 
         await client.close();
         res.status(201).json(documents);
+
     }catch(e){
         console.error('Error: ', e);
         res.status(500).send('Server failed to get clothing categories collection.');
