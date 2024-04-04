@@ -61,14 +61,29 @@ router.get('/playground/clothing-categories', async(req,res) => {
         res.status(201).json(documents);
     }catch(e){
         console.error('Error: ', e);
-        res.status(500).send('Server failed to load clothing categories collection.');
+        res.status(500).send('Server failed to get clothing categories collection.');
     }
 });
 
 
-// MARK: Get All Items For a Specific Category
+// MARK: Get All Items of a Specific Clothing Category
 router.get('/playground/category', async(req, res) =>{
+    const categoryId = req.body.categoryId;
 
+    try{
+        const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
+        await client.connect();
+
+        const categoriesCollection = client.db().collection('clothing_categories');
+        const categoryDocument = await categoriesCollection.findOne({_id: ObjectId(categoryId)});
+
+        console.log(categoryDocument);
+
+        res.status(201).json(categoryDocument);
+    }catch(e){
+        console.error('Error: ', e);
+        res.status(500).send('Server failed to get items for category with id: ', categoryId);
+    }
 });
 
 module.exports = router;
