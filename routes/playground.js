@@ -70,6 +70,8 @@ router.get('/playground/clothing-categories', async(req,res) => {
 router.get('/playground/category', async(req, res) =>{
     const categoryId = req.body.categoryId;
 
+    console.log(categoryId);
+
     try{
         const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
         await client.connect();
@@ -82,7 +84,7 @@ router.get('/playground/category', async(req, res) =>{
         res.status(201).json(categoryDocument);
     }catch(e){
         console.error('Error: ', e);
-        res.status(500).send('Server failed to get items for category with id: ', categoryId);
+        res.status(500).send('Server failed to get items for category with id: ' + categoryId);
     }
 });
 
