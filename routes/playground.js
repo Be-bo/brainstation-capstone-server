@@ -79,9 +79,14 @@ router.get('/playground/category', async(req, res) =>{
         const categoriesCollection = client.db().collection('clothing_categories');
         const categoryDocument = await categoriesCollection.findOne({_id: ObjectId(categoryId)});
 
-        console.log(categoryDocument);
+        const categoryCollectionName = categoryDocument['name']+'_collection';
+        console.log(categoryCollectionName);
+        const categoryCollection = client.db().collection(categoryCollectionName);
+        const documents = await categoryCollection.find({}).toArray();
+        console.log(documents);
 
-        res.status(201).json(categoryDocument);
+        await client.close();
+        res.status(201).json(documents);
     }catch(e){
         console.error('Error: ', e);
         res.status(500).send('Server failed to get items for category with id: ' + categoryId);
