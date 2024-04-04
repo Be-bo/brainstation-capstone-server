@@ -58,10 +58,10 @@ router.get('/playground/clothing-categories', async(req,res) => {
         const documents = await categoriesCollection.find({}).toArray();
 
         await client.close();
-
-        console.log(documents);
+        res.status(201).json(documents);
     }catch(e){
         console.error('Error: ', e);
+        res.status(500).send('Server failed to load clothing categories collection.');
     }
 });
 
