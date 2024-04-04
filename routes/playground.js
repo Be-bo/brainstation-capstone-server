@@ -79,7 +79,7 @@ router.get('/playground/category', async(req, res) =>{
         const categoriesCollection = client.db().collection('clothing_categories');
         const categoryDocument = await categoriesCollection.findOne({_id: ObjectId(categoryId)});
 
-        const categoryCollectionName = categoryDocument['name']+'_collection';
+        const categoryCollectionName = categoryDocument['name']+'_category';
         console.log(categoryCollectionName);
         const categoryCollection = client.db().collection(categoryCollectionName);
         const documents = await categoryCollection.find({}).toArray();
