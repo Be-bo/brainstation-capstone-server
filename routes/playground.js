@@ -12,6 +12,9 @@ const shirtLayerJsonPath = 'shirtLayer.json';
 const bottomLayerJsonPath = 'bottomLayer.json';
 const historyJsonPath = 'generationHistory.json';
 
+const {MongoClient} = require('mongodb');
+const mongoUri = 'mongodb://localhost:27017/toga_database';
+
 
 // MARK: Create a Generation Item
 // http://3.20.237.64:80/playground/generate -- UBUNTU SERVER
@@ -42,6 +45,30 @@ router.post('/playground/generate', async (req, res) => {
         res.status(500).json({ error });
     }
 });
+
+
+
+// MARK: Get Base Information For All Clothing Categories
+router.get('/playground/clothing-categories', async(req,res) => {
+    try{
+        const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
+        await client.connect();
+
+        const categoriesCollection = client.db().collection('clothing_categories');
+        const documents = await categoriesCollection.find({}).toArray();
+
+        await client.close();
+
+        console.log(documents);
+    }
+});
+
+
+// MARK: Get All Items For a Specific Category
+router.get('/playground/category', async(req, res) =>{
+
+});
+
 
 
 // MARK: Get Top Layer Carousel
