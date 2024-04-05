@@ -16,7 +16,7 @@ const mongoUri = 'mongodb://localhost:27017/toga_database';
 // Set up multer to handle file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, 'public', 'faces')); // Save uploads to the 'public/faces' folder
+        cb(null, path.join(__dirname, '..', 'public', 'faces')); // Save uploads to the 'public/faces' folder
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname); // Keep the original file name
