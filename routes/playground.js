@@ -34,11 +34,14 @@ const upload = multer({ storage: storage, limits: { fieldSize: 10 * 1024 * 1024 
 // http://3.145.198.110:80/playground/generate -- AWS LINUX SERVER
 router.post('/playground/generate', upload.single('face_image'), async (req, res) => {
 
+    // incoming face image
     if (!req.file) return res.status(400).send('No file uploaded');
     // const filename = req.file.filename;
     const faceFilePath = path.join(__dirname, '..', 'public', 'faces', req.file.filename);
 
     try {
+
+        // get clothing and color info using incoming ids from client
         const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
         await client.connect();
         const categoriesObject = JSON.parse(req.body.categories);
@@ -53,9 +56,9 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             clothingProperties += ' ' + colorName + ' ' + clothingItem.name;
         }
     
+        // Open AI API
         const prompt = helpers.getPrompt(clothingProperties);
         console.log(prompt);
-    
         const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
         const openaiResponse = await openai.images.generate({ model: "dall-e-3", prompt: prompt, n: 1, size: "1024x1024", });
         console.log('Successfully processed a generation request, OpenAI response: ', openaiResponse);
@@ -65,21 +68,25 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         console.log(openaiSavedImageUrl);
         const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, './public/targets/' + openaiImageName);
     
+        // Remaker Face Swap Post
         const remakerPostUrl = 'https://developer.remaker.ai/api/remaker/v1/face-swap/create-job';
         const remakerHeaders = {
             'accept': 'application/json',
             'Authorization': REMAKER_API_KEY,
         };
         const remakerFormData = new FormData();
-        remakerFormData.append('target_image', fs.createReadStream(openaiSavedImagePath));
-        remakerFormData.append('swap_image', fs.createReadStream(faceFilePath));
+        const targetImage = fs.readFileSync(openaiSavedImagePath);
+        const swapImage = fs.readFileSync(faceFilePath);
+        remakerFormData.append('target_image', new Blob([targetImage]));
+        remakerFormData.append('swap_image', new Blob([swapImage]));
         const remakerPostResponse = await axios.post(remakerPostUrl, remakerFormData, { headers: remakerHeaders });
         console.log(remakerPostResponse.data);
         const remakerJobId = remakerPostResponse.data.result.job_id;
         console.log(remakerJobId);
     
+        // Remaker Face Swap Get
         const remakerGetUrl = `https://developer.remaker.ai/api/remaker/v1/face-swap/${remakerJobId}`;
-        const remakerGetResponse = await axios.get(remakerGetUrl, { remakerHeaders });
+        const remakerGetResponse = await axios.get(remakerGetUrl, { headers: remakerHeaders });
         console.log(remakerGetResponse.data); // Print the response content
         const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
         console.log(remakerResultUrl);
@@ -91,6 +98,8 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, '../public/results/' + remakerImageName);
         console.log('remaker image saved successfully: ', remakerSavedImagePath);
     
+
+
         // const newGenerationItem = helpers.constructGenerationItem(req.body, [savedImageUrl], itemId);
         // await helpers.saveItemToGenerationHistory(req.body.userId, newGenerationItem, historyJsonPath);
         // console.log('Successfully saved item to local json: ', newGenerationItem);
