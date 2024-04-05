@@ -30,6 +30,8 @@ const upload = multer({ storage: storage, limits: {fieldSize: 10 * 1024 * 1024} 
 // http://3.145.198.110:80/playground/generate -- AWS LINUX SERVER
 router.post('/playground/generate', upload.single('face_image'), async (req, res) => {
 
+    const categoryObject = req.body.categories;
+
     // Handle file upload
     if (!req.file) {
         return res.status(400).send('No file uploaded');
