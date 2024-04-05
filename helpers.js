@@ -2,6 +2,10 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function getPrompt(clothingProperties) {
   const promptCore = 'A male model figure curated with a fashionable sense of style. He is donned in:';
   const promptTail = '. All of this gives the figure a classy, reassuring, laidback look. The image is presented in a photo realistic style, capturing the essence of an elegant male figure.';
@@ -82,7 +86,8 @@ module.exports = {
   constructGenerationItemName,
   saveItemToGenerationHistory,
   saveImageFromURL,
-  getPrompt
+  getPrompt,
+  delay
 }
 
 //    colors: [[ 'Black', '#000000' ],[ 'White', '#FFFFFF' ],[ 'Grey', '#BCBCBC' ],[ 'Brown', '#A52A2A' ],[ 'Beige', '#F5F5DC' ],[ 'Navy', '#000080' ],[ 'Olive', '#808000' ],[ 'Burgundy', '#800020' ],[ 'Purple', '#800080' ],[ 'Pink', '#FFC0CB' ]]

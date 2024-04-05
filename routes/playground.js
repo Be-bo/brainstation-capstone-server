@@ -86,19 +86,21 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
     
         // Remaker Face Swap Get
         const remakerGetUrl = `https://developer.remaker.ai/api/remaker/v1/face-swap/${remakerJobId}`;
-        const remakerGetResponse = await axios.get(remakerGetUrl, { headers: remakerHeaders });
-        console.log(remakerGetResponse.data); // Print the response content
-        const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
-        console.log(remakerResultUrl);
-    
-        const remakerImageId = uuidv4();
-        const remakerImageName = remakerImageId + '.png';
-        const remakerSavedImageUrl = 'http://3.20.237.64:80/public/results/' + remakerImageName;
-        console.log(remakerSavedImageUrl);
-        const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, '../public/results/' + remakerImageName);
-        console.log('remaker image saved successfully: ', remakerSavedImagePath);
-    
+        helpers.delay(10000).then(async ()=>{
+            const remakerGetResponse = await axios.get(remakerGetUrl, { headers: remakerHeaders });
+            console.log(remakerGetResponse.data); // Print the response content
+            const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
+            console.log(remakerResultUrl);
+        
+            const remakerImageId = uuidv4();
+            const remakerImageName = remakerImageId + '.png';
+            const remakerSavedImageUrl = 'http://3.20.237.64:80/public/results/' + remakerImageName;
+            console.log(remakerSavedImageUrl);
+            const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, '../public/results/' + remakerImageName);
+            console.log('remaker image saved successfully: ', remakerSavedImagePath);
+        });
 
+        console.log('finished try code block');
 
         // const newGenerationItem = helpers.constructGenerationItem(req.body, [savedImageUrl], itemId);
         // await helpers.saveItemToGenerationHistory(req.body.userId, newGenerationItem, historyJsonPath);
