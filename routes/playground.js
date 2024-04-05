@@ -4,12 +4,13 @@ const router = express.Router();
 const OpenAI = require("openai");
 const helpers = require('../helpers');
 const multer = require('multer');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 const { OPENAI_API_KEY } = process.env;
-const historyJsonPath = 'generationHistory.json';
+const { REMAKER_API_KEY } = process.env;
 const { MongoClient, ObjectId } = require('mongodb');
 const mongoUri = 'mongodb://localhost:27017/toga_database';
 
@@ -19,10 +20,13 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '..', 'public', 'faces')); // Save uploads to the 'public/faces' folder
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Keep the original file name
+        const uniqueFilename = uuid.v4(); // Generate a unique UUID for the filename
+        const fileExtension = path.extname(file.originalname); // Get the original file extension
+        const newFilename = `${uniqueFilename}${fileExtension}`; // Combine the UUID and file extension
+        cb(null, newFilename); // Pass the new filename to multer
     }
 });
-const upload = multer({ storage: storage, limits: {fieldSize: 10 * 1024 * 1024} });
+const upload = multer({ storage: storage, limits: { fieldSize: 10 * 1024 * 1024 } });
 
 
 // MARK: Create a Generation Item
@@ -30,38 +34,69 @@ const upload = multer({ storage: storage, limits: {fieldSize: 10 * 1024 * 1024} 
 // http://3.145.198.110:80/playground/generate -- AWS LINUX SERVER
 router.post('/playground/generate', upload.single('face_image'), async (req, res) => {
 
-    const categoriesObject = JSON.parse(req.body.categories);
-    console.log(categoriesObject[0]['selected_clothing_id']);
-    console.log(categoriesObject[0]['selected_color']);
-    console.log(categoriesObject[0]['category_id']);
-
-    // Handle file upload
-    if (!req.file) {
-        return res.status(400).send('No file uploaded');
-    }
-    res.status(200).send('File uploaded successfully');
-
+    if (!req.file) return res.status(400).send('No file uploaded');
+    // const filename = req.file.filename;
+    const faceFilePath = path.join(__dirname, '..', 'public', 'faces', req.file.filename);
 
     try {
-        // const prompt = helpers.constructPrompt(req.body);
-        // console.log('Starting generation with prompt: ', prompt);
-        // const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-        // const response = await openai.images.generate({ model: "dall-e-3", prompt: prompt, n: 1, size: "1024x1024", });
-        // console.log('Successfully processed a generation request, OpenAI response: ', response);
-
-        // const itemId = uuidv4();
-        // const imageName = itemId + '.png';
-        // console.log(imageName);
-        // const savedImageUrl = 'http://3.145.198.110:80/public/' + imageName;
-        // console.log(savedImageUrl);
-        // const savedImagePath = await helpers.saveImageFromURL(response.data[0].url, '../public/'+imageName);
-        // console.log('img saved successfully: ', savedImagePath);
-
+        const categoriesObject = JSON.parse(req.body.categories);
+        const categoriesCollection = client.db().collection('clothing_categories');
+        let clothingProperties = '';
+        for (let i = 0; i < categoriesObject.length; i++) {
+            const categoryDocument = await categoriesCollection.findOne({ _id: ObjectId(categoryId) });
+            const categoryCollectionName = categoryDocument['name'] + '_category';
+            const categoryCollection = client.db().collection(categoryCollectionName);
+            const itemName = await categoryCollection.findOne({ _id: new ObjectId(categoriesObject[i]['selected_clothing_id']) });
+            const colorName = categoriesObject[i]['selected_color'][0];
+            clothingProperties += ' ' + colorName + ' ' + itemName;
+        }
+    
+        console.log(clothingProperties);
+        const prompt = helpers.getPrompt(clothingProperties);
+        console.log(prompt);
+    
+        const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+        const openaiResponse = await openai.images.generate({ model: "dall-e-3", prompt: prompt, n: 1, size: "1024x1024", });
+        console.log('Successfully processed a generation request, OpenAI response: ', openaiResponse);
+        const openaiImageId = uuidv4();
+        const openaiImageName = openaiImageId + '.png';
+        console.log(openaiImageName);
+        const openaiSavedImageUrl = 'http://3.20.237.64:80/public/targets/' + openaiImageName;
+        console.log(openaiSavedImageUrl);
+        const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, '../public/targets/' + openaiImageName);
+        console.log('openai image saved successfully: ', openaiSavedImagePath);
+    
+        const remakerPostUrl = 'https://developer.remaker.ai/api/remaker/v1/face-swap/create-job';
+        const remakerHeaders = {
+            'accept': 'application/json',
+            'Authorization': REMAKER_API_KEY,
+        };
+        const remakerFormData = new FormData();
+        remakerFormData.append('target_image', fs.createReadStream(openaiSavedImagePath));
+        remakerFormData.append('swap_image', fs.createReadStream(faceFilePath));
+        const remakerPostResponse = await axios.post(remakerPostUrl, remakerFormData, { headers: remakerHeaders });
+        console.log(remakerPostResponse.data);
+        const remakerJobId = remakerPostResponse.data.result.job_id;
+        console.log(remakerJobId);
+    
+        const remakerGetUrl = `https://developer.remaker.ai/api/remaker/v1/face-swap/${remakerJobId}`;
+        const remakerGetResponse = await axios.get(remakerGetUrl, { remakerHeaders });
+        console.log(remakerGetResponse.data); // Print the response content
+        const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
+        console.log(remakerResultUrl);
+    
+        const remakerImageId = uuidv4();
+        const remakerImageName = remakerImageId + '.png';
+        const remakerSavedImageUrl = 'http://3.20.237.64:80/public/results/' + remakerImageName;
+        console.log(remakerSavedImageUrl);
+        const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, '../public/results/' + remakerImageName);
+        console.log('remaker image saved successfully: ', remakerSavedImagePath);
+    
         // const newGenerationItem = helpers.constructGenerationItem(req.body, [savedImageUrl], itemId);
         // await helpers.saveItemToGenerationHistory(req.body.userId, newGenerationItem, historyJsonPath);
         // console.log('Successfully saved item to local json: ', newGenerationItem);
         // res.status(201).json(newGenerationItem);
-
+    
     } catch (error) {
         console.log('Failed to create a new playground generation item: ', error);
         res.status(500).json({ error });
