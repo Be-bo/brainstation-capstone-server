@@ -64,9 +64,9 @@ router.get('/playground/clothing-categories', async(req,res) => {
 
 // MARK: Get All Items of a Specific Clothing Category
 router.get('/playground/category', async(req, res) =>{
-    const categoryId = req.body.categoryId;
+    const categoryId = req.query.categoryId;
 
-    console.log(req.body);
+    console.log(req.query);
 
     try{
         const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
