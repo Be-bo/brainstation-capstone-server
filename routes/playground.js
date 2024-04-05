@@ -96,7 +96,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             const remakerImageName = remakerImageId + '.png';
             const remakerSavedImageUrl = 'http://3.20.237.64:80/public/results/' + remakerImageName;
             console.log(remakerSavedImageUrl);
-            const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, '../public/results/' + remakerImageName);
+            const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, './public/results/' + remakerImageName);
             console.log('remaker image saved successfully: ', remakerSavedImagePath);
         });
 
