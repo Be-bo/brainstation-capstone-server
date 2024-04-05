@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '..', 'public', 'faces')); // Save uploads to the 'public/faces' folder
     },
     filename: function (req, file, cb) {
-        const uniqueFilename = uuid.v4(); // Generate a unique UUID for the filename
+        const uniqueFilename = uuidv4(); // Generate a unique UUID for the filename
         const fileExtension = path.extname(file.originalname); // Get the original file extension
         const newFilename = `${uniqueFilename}${fileExtension}`; // Combine the UUID and file extension
         cb(null, newFilename); // Pass the new filename to multer
