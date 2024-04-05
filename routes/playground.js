@@ -46,18 +46,13 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         let clothingProperties = '';
         for (let i = 0; i < categoriesObject.length; i++) {
             const categoryDocument = await categoriesCollection.findOne({ _id: ObjectId(categoriesObject[i]['category_id']) });
-            console.log(categoryDocument);
             const categoryCollectionName = categoryDocument['name'] + '_category';
-            console.log(categoryCollectionName);
             const categoryCollection = client.db().collection(categoryCollectionName);
-            console.log(categoriesObject[i]['selected_clothing_id']);
-            const itemName = await categoryCollection.findOne({ _id: ObjectId(categoriesObject[i]['selected_clothing_id']) });
-            console.log(itemName);
+            const clothingItem = await categoryCollection.findOne({ _id: ObjectId(categoriesObject[i]['selected_clothing_id']) });
             const colorName = categoriesObject[i]['selected_color'][0];
-            clothingProperties += ' ' + colorName + ' ' + itemName;
+            clothingProperties += ' ' + colorName + ' ' + clothingItem.name;
         }
     
-        console.log(clothingProperties);
         const prompt = helpers.getPrompt(clothingProperties);
         console.log(prompt);
     
@@ -66,11 +61,9 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         console.log('Successfully processed a generation request, OpenAI response: ', openaiResponse);
         const openaiImageId = uuidv4();
         const openaiImageName = openaiImageId + '.png';
-        console.log(openaiImageName);
         const openaiSavedImageUrl = 'http://3.20.237.64:80/public/targets/' + openaiImageName;
         console.log(openaiSavedImageUrl);
         const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, './public/targets/' + openaiImageName);
-        console.log('openai image saved successfully: ', openaiSavedImagePath);
     
         const remakerPostUrl = 'https://developer.remaker.ai/api/remaker/v1/face-swap/create-job';
         const remakerHeaders = {
