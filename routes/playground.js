@@ -52,6 +52,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             const categoryCollection = client.db().collection(categoryCollectionName);
             console.log(categoriesObject[i]['selected_clothing_id']);
             const itemName = await categoryCollection.findOne({ _id: ObjectId(categoriesObject[i]['selected_clothing_id']) });
+            console.log(itemName);
             const colorName = categoriesObject[i]['selected_color'][0];
             clothingProperties += ' ' + colorName + ' ' + itemName;
         }
@@ -68,7 +69,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         console.log(openaiImageName);
         const openaiSavedImageUrl = 'http://3.20.237.64:80/public/targets/' + openaiImageName;
         console.log(openaiSavedImageUrl);
-        const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, '../public/targets/' + openaiImageName);
+        const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, './public/targets/' + openaiImageName);
         console.log('openai image saved successfully: ', openaiSavedImagePath);
     
         const remakerPostUrl = 'https://developer.remaker.ai/api/remaker/v1/face-swap/create-job';
