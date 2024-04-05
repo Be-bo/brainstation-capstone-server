@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
         cb(null, file.originalname); // Keep the original file name
     }
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: {fieldSize: 10 * 1024 * 1024} });
 
 
 // MARK: Create a Generation Item
