@@ -50,7 +50,8 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             const categoryCollectionName = categoryDocument['name'] + '_category';
             console.log(categoryCollectionName);
             const categoryCollection = client.db().collection(categoryCollectionName);
-            const itemName = await categoryCollection.findOne({ _id: new ObjectId(categoriesObject[i]['selected_clothing_id']) });
+            console.log(categoriesObject[i]['selected_clothing_id']);
+            const itemName = await categoryCollection.findOne({ _id: ObjectId(categoriesObject[i]['selected_clothing_id']) });
             const colorName = categoriesObject[i]['selected_color'][0];
             clothingProperties += ' ' + colorName + ' ' + itemName;
         }
