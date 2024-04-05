@@ -53,7 +53,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             const categoryCollection = client.db().collection(categoryCollectionName);
             const clothingItem = await categoryCollection.findOne({ _id: ObjectId(categoriesObject[i]['selected_clothing_id']) });
             const colorName = categoriesObject[i]['selected_color'][0];
-            clothingProperties += ' ' + colorName + ' ' + clothingItem.name;
+            clothingProperties += ' ' + colorName + ' ' + clothingItem.name + ',';
         }
     
         // Open AI API
