@@ -31,7 +31,9 @@ const upload = multer({ storage: storage, limits: {fieldSize: 10 * 1024 * 1024} 
 router.post('/playground/generate', upload.single('face_image'), async (req, res) => {
 
     const categoriesObject = req.body.categories;
-    console.log(categoriesObject);
+    console.log(categoriesObject[0]['selected_clothing_id']);
+    console.log(categoriesObject[0]['selected_color']);
+    console.log(categoriesObject[0]['category_id']);
 
     // Handle file upload
     if (!req.file) {
