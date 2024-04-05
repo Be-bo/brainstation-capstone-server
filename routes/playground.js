@@ -30,7 +30,7 @@ const upload = multer({ storage: storage, limits: {fieldSize: 10 * 1024 * 1024} 
 // http://3.145.198.110:80/playground/generate -- AWS LINUX SERVER
 router.post('/playground/generate', upload.single('face_image'), async (req, res) => {
 
-    const categoriesObject = req.body.categories;
+    const categoriesObject = JSON.parse(req.body.categories);
     console.log(categoriesObject[0]['selected_clothing_id']);
     console.log(categoriesObject[0]['selected_color']);
     console.log(categoriesObject[0]['category_id']);
