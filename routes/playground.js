@@ -39,6 +39,8 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
     const faceFilePath = path.join(__dirname, '..', 'public', 'faces', req.file.filename);
 
     try {
+        const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+        await client.connect();
         const categoriesObject = JSON.parse(req.body.categories);
         const categoriesCollection = client.db().collection('clothing_categories');
         let clothingProperties = '';
