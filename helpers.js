@@ -77,3 +77,5 @@ module.exports = {
     saveItemToGenerationHistory,
     saveImageFromURL
 }
+
+//    colors: [[ 'Black', '#000000' ],[ 'White', '#FFFFFF' ],[ 'Grey', '#BCBCBC' ],[ 'Brown', '#A52A2A' ],[ 'Beige', '#F5F5DC' ],[ 'Navy', '#000080' ],[ 'Olive', '#808000' ],[ 'Burgundy', '#800020' ],[ 'Purple', '#800080' ],[ 'Pink', '#FFC0CB' ]]

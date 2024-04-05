@@ -66,6 +66,8 @@ router.get('/playground/clothing-categories', async(req,res) => {
 router.get('/playground/category', async(req, res) =>{
     const categoryId = req.body.categoryId;
 
+    console.log(req.body);
+
     try{
         const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true});
         await client.connect();
