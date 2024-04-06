@@ -38,6 +38,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
     if (!req.file) return res.status(400).send('No file uploaded');
     // const filename = req.file.filename;
     const faceFilePath = path.join(__dirname, '..', 'public', 'faces', req.file.filename);
+    const faceImageUrl = 'http://3.20.237.64:80/public/faces/'+req.file.filename;
 
     try {
 
@@ -67,6 +68,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         const openaiSavedImageUrl = 'http://3.20.237.64:80/public/targets/' + openaiImageName;
         console.log(openaiSavedImageUrl);
         const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, './public/targets/' + openaiImageName);
+        console.log(openaiSavedImagePath);
     
         // Remaker Face Swap Post
         const remakerPostUrl = 'https://developer.remaker.ai/api/remaker/v1/face-swap/create-job';
@@ -98,14 +100,15 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             console.log(remakerSavedImageUrl);
             const remakerSavedImagePath = await helpers.saveImageFromURL(remakerResultUrl, './public/results/' + remakerImageName);
             console.log('remaker image saved successfully: ', remakerSavedImagePath);
+
+            const newGenerationItem = helpers.constructGenerationItem(faceImageUrl, openaiSavedImageUrl, remakerSavedImageUrl, Date.now(), 'test-author', categoriesObject);
+            const generatedItemsCollection = client.db().collection('generated_items');
+            const result = await generatedItemsCollection.insertOne(myObject);
+            console.log('Object inserted with ID:', result.insertedId);
+            await client.close();
+            console.log('Successfully saved item to mongo:', newGenerationItem);
+            res.status(201).json(newGenerationItem);
         });
-
-        console.log('finished try code block');
-
-        // const newGenerationItem = helpers.constructGenerationItem(req.body, [savedImageUrl], itemId);
-        // await helpers.saveItemToGenerationHistory(req.body.userId, newGenerationItem, historyJsonPath);
-        // console.log('Successfully saved item to local json: ', newGenerationItem);
-        // res.status(201).json(newGenerationItem);
     
     } catch (error) {
         console.log('Failed to create a new playground generation item: ', error);
