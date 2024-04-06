@@ -90,7 +90,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         const remakerGetUrl = `https://developer.remaker.ai/api/remaker/v1/face-swap/${remakerJobId}`;
         helpers.delay(10000).then(async ()=>{
             const remakerGetResponse = await axios.get(remakerGetUrl, { headers: remakerHeaders });
-            console.log(remakerGetResponse.data); // Print the response content
+            console.log(remakerGetResponse.data);
             const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
             console.log(remakerResultUrl);
         
@@ -103,7 +103,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
 
             const newGenerationItem = helpers.constructGenerationItem(faceImageUrl, openaiSavedImageUrl, remakerSavedImageUrl, Date.now(), 'test-author', categoriesObject);
             const generatedItemsCollection = client.db().collection('generated_items');
-            const result = await generatedItemsCollection.insertOne(myObject);
+            const result = await generatedItemsCollection.insertOne(newGenerationItem);
             console.log('Object inserted with ID:', result.insertedId);
             await client.close();
             console.log('Successfully saved item to mongo:', newGenerationItem);
