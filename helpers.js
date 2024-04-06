@@ -12,11 +12,6 @@ function getPrompt(clothingProperties) {
   return promptCore + clothingProperties + promptTail;
 }
 
-function constructGenerationItemName(reqBody) {
-  const itemName = `${reqBody.top.color} ${reqBody.top.name} With a(n) ${reqBody.shirt.color} ${reqBody.shirt.name} and ${reqBody.bottom.color} ${reqBody.bottom.name}`; // adjust if needing to add extra categories & properties
-  return itemName;
-}
-
 function constructGenerationItem(faceImage, targetImage, resultImage, timestamp, authorId, clothing) {
   const objectToSave = {
     'face_image': faceImage,
@@ -73,9 +68,7 @@ async function saveImageFromURL(url, destinationPath) {
 }
 
 module.exports = {
-  constructPrompt,
   constructGenerationItem,
-  constructGenerationItemName,
   saveItemToGenerationHistory,
   saveImageFromURL,
   getPrompt,
