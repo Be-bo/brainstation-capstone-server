@@ -14,8 +14,8 @@ app.use('/public', express.static('public'));
 // MARK: Test Routes
 app.get('/', (req, res) => {
     try{
-        console.log('Hello World!');
-        res.send('Hello World!');
+        console.log('Client pang us: Hello World!');
+        res.send('Server says: Hello World!');
     }catch(error){
         console.log('Hello world failed with: ', error);
         res.status(500).json({error});
