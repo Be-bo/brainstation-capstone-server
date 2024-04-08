@@ -12,7 +12,7 @@ async function main() {
     const result = await targetCollection.updateMany(
         { image: { $exists: true } }, // Filter documents with the "image" field
         [
-            { $set: { image: { $concat: [newAddress, { $substr: ['$image', 22, -1] }] } } }
+            { $set: { image: { $concat: [newAddress, { $substr: ['$face_image', 22, -1] }] } } }
         ]
     );
 
