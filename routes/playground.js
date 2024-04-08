@@ -79,6 +79,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
             const remakerSavedImageUrl = helpers.resultsServerUrlPath + remakerImageName;
             await helpers.saveImageFromURL(remakerResultUrl, './public/results/' + remakerImageName); // save final result image locally
             const newGenerationItem = helpers.constructGenerationItem(faceImageUrl, openaiSavedImageUrl, remakerSavedImageUrl, Date.now(), 'test-author', clientCategoriesSelections); // save new item to Mongo
+            console.log('helpers generated this item: ', newGenerationItem);
             if (!saveNewGenerationItem(saveNewGenerationItem)) return res.status(500).send('Failed to save the new image generation item to the server database.');
             return res.status(201).json(newGenerationItem);
         });
@@ -181,6 +182,7 @@ async function saveNewGenerationItem(newGenerationItem) {
     const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
     await client.connect();
     const generatedItemsCollection = client.db().collection('generated_items');
+    console.log('trying to save to db: ', newGenerationItem);
     const result = await generatedItemsCollection.insertOne(newGenerationItem);
     await client.close();
     if (result && result.insertedCount === 1) return true;
