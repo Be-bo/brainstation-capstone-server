@@ -200,7 +200,8 @@ async function getClothingCategoriesData() {
     const categoriesCollection = client.db().collection('clothing_categories');
     const categoryDocuments = await categoriesCollection.find({}).toArray();
     await client.close();
-    return categoryDocuments;
+    const categoryDocumentsWithStringIds = categoryDocuments.map(doc => {return { ...doc, _id: doc._id.toString() };});
+    return categoryDocumentsWithStringIds;
 }
 
 /**
