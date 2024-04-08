@@ -63,6 +63,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         const openaiResponse = await openai.images.generate({ model: "dall-e-3", prompt: prompt, n: 1, size: "1024x1024", }); // generation request properties
         const openaiImageName = uuidv4() + '.png';
         const openaiSavedImageUrl = helpers.targetsServerUrlPath + openaiImageName;
+        if(!openaiResponse.data[0].url) return res.status(500).send('Open AI DALL-E service failed to generate an outfit image.');
         const openaiSavedImagePath = await helpers.saveImageFromURL(openaiResponse.data[0].url, './public/targets/' + openaiImageName); // save locally, get path
 
         // Remaker POST
@@ -70,13 +71,14 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         const remakerHeaders = { 'accept': 'application/json', 'Authorization': REMAKER_API_KEY };
         const remakerFormData = await constructRemakerFormData(openaiSavedImagePath, faceLocalFilePath); // save face and DALL-E (target) images as blobs inside of a form data
         const remakerPostResponse = await axios.post(remakerPostUrl, remakerFormData, { headers: remakerHeaders });
+        if(!remakerPostResponse.data.result.job_id) return res.status(500).send('Remaker service failed to initiate face swap.');
         const remakerJobId = remakerPostResponse.data.result.job_id; // save Remaker's job ID assigned to our request
 
         // Remaker GET
         const remakerGetUrl = `https://developer.remaker.ai/api/remaker/v1/face-swap/${remakerJobId}`; // use the job ID in our get request for the face-swapped image
         helpers.delay(10000).then(async () => { // Remaker's servers seem to fail consistently when prompted right away
             const remakerGetResponse = await axios.get(remakerGetUrl, { headers: remakerHeaders });
-            if(!remakerGetResponse.data.result.output_image_url[0]) return res.status(500).send('Remaker service failed to generate face swap.');
+            if(!remakerGetResponse.data.result.output_image_url[0]) return res.status(500).send('Remaker service failed to finish generating face swap.');
             const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
             const remakerImageName = uuidv4() + '.png';
             const remakerSavedImageUrl = helpers.resultsServerUrlPath + remakerImageName;
