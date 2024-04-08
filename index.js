@@ -1,8 +1,8 @@
 // MARK: Setup
 const express = require('express');
 const app = express();
-const cors = require('cors');
-app.use(cors({origin: "*"}));
+// const cors = require('cors');
+// app.use(cors({origin: "*"}));
 const playgroundRoutes = require('./routes/playground');
 const galleryRoutes = require('./routes/gallery');
 require('dotenv').config();
