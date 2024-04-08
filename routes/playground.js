@@ -145,6 +145,7 @@ async function combineClothingProperties(clothingCategories, clientCategoriesSel
     await client.connect();
     let clothingProperties = '';
     console.log(clothingCategories);
+    console.log(clientCategoriesSelections);
     for (let i = 0; i < clientCategoriesSelections.length; i++) {
         const categoryDocument = clothingCategories.find(obj => obj['_id'] === ObjectId(clientCategoriesSelections[i]['category_id'])); // need category name first to know which collection to target for clothing item name
         console.log(categoryDocument);
