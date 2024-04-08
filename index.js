@@ -1,7 +1,7 @@
 // MARK: Setup
 const express = require('express');
 const app = express();
-app.set('trust proxy', true);
+// app.set('trust proxy', true);
 const cors = require('cors');
 const playgroundRoutes = require('./routes/playground');
 const galleryRoutes = require('./routes/gallery');
