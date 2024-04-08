@@ -10,7 +10,7 @@ async function main() {
     const targetCollection = client.db().collection('generated_items');
 
     const result = await targetCollection.updateMany(
-        { image: { $exists: true } }, // Filter documents with the "image" field
+        { face_image: { $exists: true } }, // Filter documents with the "image" field
         [
             { $set: { face_image: { $concat: [newAddress, { $substr: ['$face_image', 22, -1] }] } } }
         ]
