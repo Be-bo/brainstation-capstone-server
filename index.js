@@ -1,16 +1,13 @@
 // MARK: Setup
 const express = require('express');
 const app = express();
-// app.set('trust proxy', true);
 const cors = require('cors');
+app.use(cors({origin: "*"}));
 const playgroundRoutes = require('./routes/playground');
 const galleryRoutes = require('./routes/gallery');
 require('dotenv').config();
 const {PORT} = process.env;
 app.use(express.json());
-app.use(cors({
-    origin: "*"
-}));
 app.use('/public', express.static('public'));
 
 
