@@ -7,12 +7,12 @@ async function main() {
 
     const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
     await client.connect();
-    const targetCollection = client.db().collection('top_category');
+    const targetCollection = client.db().collection('generated_items');
 
     const result = await targetCollection.updateMany(
         { image: { $exists: true } }, // Filter documents with the "image" field
         [
-            { $set: { image: { $concat: [newAddress, { $substr: ['$face_image', 22, -1] }] } } }
+            { $set: { face_image: { $concat: [newAddress, { $substr: ['$face_image', 22, -1] }] } } }
         ]
     );
 
