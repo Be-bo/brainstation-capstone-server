@@ -21,3 +21,11 @@ async function main() {
 }
 
 main();
+
+
+// 'http://3.130.188.16:80/public/button-up.png'
+// 'http://3.130.188.16:80/public/crew-tee.png'
+// 'http://3.130.188.16:80/public/henley.png'
+// 'http://3.130.188.16:80/public/polo.png'
+// 'http://3.130.188.16:80/public/v-neck-tee.png'
+// {$set: {image: "your_new_image_value_here"}}
