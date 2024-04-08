@@ -76,6 +76,7 @@ router.post('/playground/generate', upload.single('face_image'), async (req, res
         const remakerGetUrl = `https://developer.remaker.ai/api/remaker/v1/face-swap/${remakerJobId}`; // use the job ID in our get request for the face-swapped image
         helpers.delay(10000).then(async () => { // Remaker's servers seem to fail consistently when prompted right away
             const remakerGetResponse = await axios.get(remakerGetUrl, { headers: remakerHeaders });
+            if(!remakerGetResponse.data.result.output_image_url[0]) return res.status(500).send('Remaker service failed to generate face swap.');
             const remakerResultUrl = remakerGetResponse.data.result.output_image_url[0];
             const remakerImageName = uuidv4() + '.png';
             const remakerSavedImageUrl = helpers.resultsServerUrlPath + remakerImageName;
