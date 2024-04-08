@@ -2,6 +2,8 @@
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
+require('dotenv').config();
+const { LOCAL_SERVER_IP } = process.env;
 
 
 // MARK: Functions
@@ -81,10 +83,19 @@ async function saveImageFromURL(url, destinationPath) {
 }
 
 
+// MARK: Data
+const facesServerUrlPath = `http://${LOCAL_SERVER_IP}/public/faces/`;
+const targetsServerUrlPath = `http://${LOCAL_SERVER_IP}/public/targets/`;
+const resultsServerUrlPath = `http://${LOCAL_SERVER_IP}/public/results/`;
+
+
 // MARK: Exports
 module.exports = {
   constructGenerationItem,
   saveImageFromURL,
   getPrompt,
-  delay
+  delay,
+  facesServerUrlPath,
+  targetsServerUrlPath,
+  resultsServerUrlPath
 }
