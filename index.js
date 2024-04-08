@@ -2,8 +2,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const accountRoutes = require('./routes/account');
 const playgroundRoutes = require('./routes/playground');
+const galleryRoutes = require('./routes/gallery');
 require('dotenv').config();
 const {PORT} = process.env;
 app.use(express.json());
@@ -24,8 +24,8 @@ app.get('/', (req, res) => {
 
 
 // MARK: Actual Routes
-app.use(accountRoutes);
 app.use(playgroundRoutes);
+app.use(galleryRoutes);
 
 
 // MARK: Run Server
