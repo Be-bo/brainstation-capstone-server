@@ -19,3 +19,5 @@ async function main() {
     console.log(result);
     await client.close();
 }
+
+main();
