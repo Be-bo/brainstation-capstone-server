@@ -7,7 +7,7 @@ async function main() {
 
     const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
     await client.connect();
-    const targetCollection = client.db().collection('bottom_category');
+    const targetCollection = client.db().collection('top_category');
 
     const result = await targetCollection.updateMany(
         { image: { $exists: true } }, // Filter documents with the "image" field
