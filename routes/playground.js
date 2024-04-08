@@ -147,7 +147,7 @@ async function combineClothingProperties(clothingCategories, clientCategoriesSel
     console.log(clothingCategories);
     console.log(clientCategoriesSelections);
     for (let i = 0; i < clientCategoriesSelections.length; i++) {
-        const categoryDocument = clothingCategories.find(obj => obj['_id'].toString() === ObjectId(clientCategoriesSelections[i]['category_id'])); // need category name first to know which collection to target for clothing item name
+        const categoryDocument = clothingCategories.find(obj => ObjectId(obj['_id']).toString() === ObjectId(clientCategoriesSelections[i]['category_id'])); // need category name first to know which collection to target for clothing item name
         console.log(categoryDocument);
         // const categoryDocument = await clothingCategories.findOne({ _id: ObjectId(clientCategoriesSelections[i]['category_id']) });
         const categoryCollectionName = categoryDocument['name'] + '_category';
